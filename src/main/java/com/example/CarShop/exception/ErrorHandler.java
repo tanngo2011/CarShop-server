@@ -19,10 +19,24 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 
 @ControllerAdvice
 public class ErrorHandler extends ResponseEntityExceptionHandler
         implements MessageSourceAware {
+
+
+    MessageSource messageSource;
+
+
+    @Override
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+
+    private String getMessage(String code, Object... args) { //--> Kiểu dữ liệu + dấu ba chấm => có nghĩa là ta có thể truyền vào bao nhiêu tham số có kiểu dữ liệu đó cũng được
+        return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
+    }
 
 
     @Override
@@ -32,7 +46,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler
             HttpStatusCode status,
             WebRequest request
     ) {
-        var message = "Oops... Invalid Data";
+        var message = getMessage("car.licensePlate.NotBlank.message", "", "haha", LocaleContextHolder.getLocale());
         var errors = new HashMap<String, String>();
         for (FieldError error : e.getFieldErrors()) {
             var key = error.getField();
