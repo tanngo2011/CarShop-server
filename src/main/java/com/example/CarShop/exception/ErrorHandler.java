@@ -46,7 +46,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler
             HttpStatusCode status,
             WebRequest request
     ) {
-        var message = getMessage("car.licensePlate.NotBlank.message", "", "haha", LocaleContextHolder.getLocale());
+        var message = "Oops... Invalid Data";
         var errors = new HashMap<String, String>();
         for (FieldError error : e.getFieldErrors()) {
             var key = error.getField();
